@@ -54,10 +54,10 @@ namespace Game1
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            // Hier worden de sprites geladen.
             bal = Content.Load<Texture2D>("bal");
             blauweSpeler = Content.Load<Texture2D>("blauweSpeler");
             rodeSpeler = Content.Load<Texture2D>("rodeSpeler");
-            // TODO: use this.Content to load your game content here
         }
 
         /// <summary>
@@ -82,20 +82,38 @@ namespace Game1
             if (yBal >= 464 || yBal <= 0)
             {
                 yVector = -yVector;
-
             }
             //De volgende regels zorgen ervoor dat de bal aan de linker en rechterkant stuitert.
             if (xBal >= 786 || xBal <= 0)
             {
                 xVector = -xVector;
             }
-            yBal = yBal + yVector;
-            xBal = xBal + xVector;
+            //De volgende 2 regels zorgen voor de verplaatsing van de bal.
+            yBal += yVector;
+            xBal += xVector;
+            //De komende regels zorgen ervoor dat de Blauwe en Rode spelers omlaag kunnen bewegen.
+            if (Keyboard.GetState().IsKeyDown(Keys.S) && yBlauw <= 373)
+            {
+                yBlauw += 5;
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.Down) && yRood <= 373)
+            {
+                yRood += 5;
+            }
+            //De komende regels zorgen ervoor dat de Blauwe en Rode spelers omhoog kunnen bewegen.
+            if (Keyboard.GetState().IsKeyDown(Keys.W) && yBlauw >= 11)
+            {
+                yBlauw -= 5;
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.Up) && yRood >= 11)
+            {
+                yRood -= 5;
+            }
+            //De komende 3 regels zorgen ervoor dat de plek van de spelers en de bal geüpdate wordt.
             blauweSpelerPlek = new Vector2(xBlauw, yBlauw);
             rodeSpelerPlek = new Vector2(xRood, yRood);
             balPosition = new Vector2(xBal, yBal);
-            // TODO: Add your update logic here
-
+            //De volgende line update de game.
             base.Update(gameTime);
         }
 
@@ -111,8 +129,6 @@ namespace Game1
             spriteBatch.Draw(blauweSpeler, blauweSpelerPlek, Color.White);
             spriteBatch.Draw(rodeSpeler, rodeSpelerPlek, Color.White);
             spriteBatch.End();
-            // TODO: Add your drawing code here
-
             base.Draw(gameTime);
         }
     }
